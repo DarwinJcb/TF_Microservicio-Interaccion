@@ -100,10 +100,7 @@ export class UsuariosRemotosService {
   ): Promise<Respuesta> {
     try {
       return await firstValueFrom(
-        this.clienteUsuarios.send<Respuesta, IdUsuarioPayload>(
-          patron,
-          payload,
-        ),
+        this.clienteUsuarios.send<Respuesta, IdUsuarioPayload>(patron, payload),
       );
     } catch (error: unknown) {
       throw this.crearExcepcionRemota(error);
@@ -136,9 +133,6 @@ export class UsuariosRemotosService {
       (Array.isArray(mensaje) &&
         mensaje.every((elemento) => typeof elemento === 'string'));
 
-    return (
-      typeof posibleError.statusCode === 'number' &&
-      mensajeValido
-    );
+    return typeof posibleError.statusCode === 'number' && mensajeValido;
   }
 }

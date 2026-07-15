@@ -12,9 +12,7 @@ import { InteraccionesService } from './interacciones.service';
 
 @Controller()
 export class InteraccionesController {
-  constructor(
-    private readonly interaccionesService: InteraccionesService,
-  ) { }
+  constructor(private readonly interaccionesService: InteraccionesService) {}
 
   @MessagePattern(INTERACCIONES_PATTERNS.CREAR)
   create(@Payload() createInteraccionDto: CreateInteraccionDto) {

@@ -1,43 +1,55 @@
 /* tf_microservicio-interacciones/src/matches/matches.controller.ts */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { MatchesService } from './matches.service';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateMatchDto } from './dto/create-match.dto';
-import { UpdateMatchDto } from './dto/update-match.dto';
+import {
+  ActualizarMatchPayloadDto,
+  IdMatchPayloadDto,
+  IdUsuarioMatchesPayloadDto,
+} from './dto/matches-payload.dto';
+import { MATCHES_PATTERNS } from './matches.patterns';
+import { MatchesService } from './matches.service';
 
-@Controller('matches')
+@Controller()
 export class MatchesController {
   constructor(private readonly matchesService: MatchesService) {}
 
-  @Post()
-  create(@Body() createMatchDto: CreateMatchDto) {
+  @MessagePattern(MATCHES_PATTERNS.CREAR)
+  create(@Payload() createMatchDto: CreateMatchDto) {
     return this.matchesService.create(createMatchDto);
   }
 
-  @Get()
+  @MessagePattern(MATCHES_PATTERNS.LISTAR)
   findAll() {
     return this.matchesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.matchesService.findOne(+id);
+  @MessagePattern(MATCHES_PATTERNS.LISTAR_POR_USUARIO)
+  findByUsuario(
+    @Payload()
+    idUsuarioPayloadDto: IdUsuarioMatchesPayloadDto,
+  ) {
+    return this.matchesService.findByUsuario(idUsuarioPayloadDto.IdUsuario);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMatchDto: UpdateMatchDto) {
-    return this.matchesService.update(+id, updateMatchDto);
+  @MessagePattern(MATCHES_PATTERNS.BUSCAR_POR_ID)
+  findOne(@Payload() idMatchPayloadDto: IdMatchPayloadDto) {
+    return this.matchesService.findOne(idMatchPayloadDto.IdMatch);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.matchesService.remove(+id);
+  @MessagePattern(MATCHES_PATTERNS.ACTUALIZAR)
+  update(
+    @Payload()
+    actualizarMatchPayloadDto: ActualizarMatchPayloadDto,
+  ) {
+    return this.matchesService.update(
+      actualizarMatchPayloadDto.IdMatch,
+      actualizarMatchPayloadDto.datosMatch,
+    );
+  }
+
+  @MessagePattern(MATCHES_PATTERNS.ELIMINAR)
+  remove(@Payload() idMatchPayloadDto: IdMatchPayloadDto) {
+    return this.matchesService.remove(idMatchPayloadDto.IdMatch);
   }
 }

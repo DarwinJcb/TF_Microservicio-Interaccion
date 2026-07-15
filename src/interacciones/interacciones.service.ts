@@ -11,7 +11,7 @@ export class InteraccionesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usuariosRemotosService: UsuariosRemotosService,
-  ) { }
+  ) {}
 
   async create(createInteraccionDto: CreateInteraccionDto) {
     const { UsuarioEmisorFK, UsuarioReceptorFK } = createInteraccionDto;
@@ -75,10 +75,8 @@ export class InteraccionesService {
 
     return interacciones.map((interaccion) => ({
       ...interaccion,
-      usuarioEmisor:
-        usuariosPorId.get(interaccion.UsuarioEmisorFK) ?? null,
-      usuarioReceptor:
-        usuariosPorId.get(interaccion.UsuarioReceptorFK) ?? null,
+      usuarioEmisor: usuariosPorId.get(interaccion.UsuarioEmisorFK) ?? null,
+      usuarioReceptor: usuariosPorId.get(interaccion.UsuarioReceptorFK) ?? null,
     }));
   }
 
@@ -97,16 +95,13 @@ export class InteraccionesService {
 
     const usuariosPorId =
       await this.usuariosRemotosService.obtenerUsuariosPorIds(
-        interacciones.map(
-          (interaccion) => interaccion.UsuarioReceptorFK,
-        ),
+        interacciones.map((interaccion) => interaccion.UsuarioReceptorFK),
       );
 
     return interacciones.map((interaccion) => ({
       ...interaccion,
       usuarioEmisor,
-      usuarioReceptor:
-        usuariosPorId.get(interaccion.UsuarioReceptorFK) ?? null,
+      usuarioReceptor: usuariosPorId.get(interaccion.UsuarioReceptorFK) ?? null,
     }));
   }
 
@@ -125,15 +120,12 @@ export class InteraccionesService {
 
     const usuariosPorId =
       await this.usuariosRemotosService.obtenerUsuariosPorIds(
-        interacciones.map(
-          (interaccion) => interaccion.UsuarioEmisorFK,
-        ),
+        interacciones.map((interaccion) => interaccion.UsuarioEmisorFK),
       );
 
     return interacciones.map((interaccion) => ({
       ...interaccion,
-      usuarioEmisor:
-        usuariosPorId.get(interaccion.UsuarioEmisorFK) ?? null,
+      usuarioEmisor: usuariosPorId.get(interaccion.UsuarioEmisorFK) ?? null,
       usuarioReceptor,
     }));
   }
@@ -142,12 +134,8 @@ export class InteraccionesService {
     const interaccion = await this.obtenerInteraccion(id);
 
     const [usuarioEmisor, usuarioReceptor] = await Promise.all([
-      this.usuariosRemotosService.obtenerUsuario(
-        interaccion.UsuarioEmisorFK,
-      ),
-      this.usuariosRemotosService.obtenerUsuario(
-        interaccion.UsuarioReceptorFK,
-      ),
+      this.usuariosRemotosService.obtenerUsuario(interaccion.UsuarioEmisorFK),
+      this.usuariosRemotosService.obtenerUsuario(interaccion.UsuarioReceptorFK),
     ]);
 
     return {
@@ -157,24 +145,17 @@ export class InteraccionesService {
     };
   }
 
-  async update(
-    id: number,
-    updateInteraccionDto: UpdateInteraccionDto,
-  ) {
+  async update(id: number, updateInteraccionDto: UpdateInteraccionDto) {
     const interaccionActual = await this.obtenerInteraccion(id);
 
     const idUsuarioEmisor =
-      updateInteraccionDto.UsuarioEmisorFK ??
-      interaccionActual.UsuarioEmisorFK;
+      updateInteraccionDto.UsuarioEmisorFK ?? interaccionActual.UsuarioEmisorFK;
 
     const idUsuarioReceptor =
       updateInteraccionDto.UsuarioReceptorFK ??
       interaccionActual.UsuarioReceptorFK;
 
-    this.verificarUsuariosDiferentes(
-      idUsuarioEmisor,
-      idUsuarioReceptor,
-    );
+    this.verificarUsuariosDiferentes(idUsuarioEmisor, idUsuarioReceptor);
 
     const [usuarioEmisor, usuarioReceptor] = await Promise.all([
       this.usuariosRemotosService.obtenerUsuario(idUsuarioEmisor),
@@ -204,13 +185,12 @@ export class InteraccionesService {
       });
     }
 
-    const interaccionActualizada =
-      await this.prisma.interaccion.update({
-        where: {
-          IdInteraccion: id,
-        },
-        data: updateInteraccionDto,
-      });
+    const interaccionActualizada = await this.prisma.interaccion.update({
+      where: {
+        IdInteraccion: id,
+      },
+      data: updateInteraccionDto,
+    });
 
     return {
       ...interaccionActualizada,

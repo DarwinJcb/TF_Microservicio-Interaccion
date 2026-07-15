@@ -3,14 +3,14 @@ import { IsEnum, IsInt, Min } from 'class-validator';
 import { TipoInteraccion } from '../../generated/prisma/enums';
 
 export class CreateInteraccionDto {
-    @IsEnum(TipoInteraccion)
-    tipoInteraccion: TipoInteraccion;
+  @IsEnum(TipoInteraccion)
+  tipoInteraccion: TipoInteraccion;
 
-    @IsInt()
-    @Min(1)
-    UsuarioEmisorFK: number;
+  @IsInt()
+  @Min(1)
+  UsuarioEmisorFK: number;
 
-    @IsInt()
-    @Min(1)
-    UsuarioReceptorFK: number;
+  @IsInt()
+  @Min(1)
+  UsuarioReceptorFK: number;
 }
