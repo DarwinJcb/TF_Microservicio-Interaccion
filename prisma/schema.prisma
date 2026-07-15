@@ -1,6 +1,3 @@
-/**
- * tf_microservicio-interacciones/prisma/schema.prisma
- */
 generator client {
   provider     = "prisma-client"
   output       = "../src/generated/prisma"
@@ -9,4 +6,61 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+model Chat {
+  IdChat        Int       @id @default(autoincrement())
+  fechaCreacion DateTime  @default(now())
+  MatchFK       Int       @unique
+  Match         Match     @relation(fields: [MatchFK], references: [IdMatch])
+  Mensaje       Mensaje[]
+}
+
+model CondicionComunicacion {
+  IdCondicionComunicacion Int    @id @default(autoincrement())
+  descripcion             String
+}
+
+model Interaccion {
+  IdInteraccion     Int             @id @default(autoincrement())
+  tipoInteraccion   TipoInteraccion
+  fechaInteraccion  DateTime        @default(now())
+  UsuarioEmisorFK   Int
+  UsuarioReceptorFK Int
+
+  @@unique([UsuarioEmisorFK, UsuarioReceptorFK])
+}
+
+model Match {
+  IdMatch      Int      @id @default(autoincrement())
+  fechaMatch   DateTime @default(now())
+  UsuarioUnoFK Int
+  UsuarioDosFK Int
+  Chat         Chat?
+
+  @@unique([UsuarioUnoFK, UsuarioDosFK])
+}
+
+model Mensaje {
+  IdMensaje       Int      @id @default(autoincrement())
+  contenido       String
+  fechaEnvio      DateTime @default(now())
+  ChatFK          Int
+  UsuarioEmisorFK Int
+  Chat            Chat     @relation(fields: [ChatFK], references: [IdChat])
+}
+
+model Reporte {
+  IdReporte           Int      @id @default(autoincrement())
+  motivo              String
+  fechaReporte        DateTime @default(now())
+  UsuarioReportanteFK Int
+  UsuarioReportadoFK  Int
+}
+
+enum TipoInteraccion {
+  LIKE
+  DISLIKE
+  EVITAR
+  SUPERLIKE
 }
