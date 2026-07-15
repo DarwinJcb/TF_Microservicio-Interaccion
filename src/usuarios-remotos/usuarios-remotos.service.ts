@@ -54,7 +54,7 @@ export class UsuariosRemotosService {
 
   async obtenerUsuariosPorIds(
     idsUsuarios: number[],
-  ): Promise<Map<number, unknown | null>> {
+  ): Promise<Map<number, unknown>> {
     const identificadoresUnicos = [...new Set(idsUsuarios)];
 
     const usuarios = await Promise.all(
@@ -68,9 +68,7 @@ export class UsuariosRemotosService {
     return new Map(usuarios);
   }
 
-  private async obtenerUsuarioOpcional(
-    IdUsuario: number,
-  ): Promise<unknown | null> {
+  private async obtenerUsuarioOpcional(IdUsuario: number): Promise<unknown> {
     const payload: IdUsuarioPayload = {
       IdUsuario,
     };
@@ -85,7 +83,7 @@ export class UsuariosRemotosService {
     } catch (error: unknown) {
       if (
         this.esErrorRpcConEstado(error) &&
-        error.statusCode === HttpStatus.NOT_FOUND
+        error.statusCode === Number(HttpStatus.NOT_FOUND)
       ) {
         return null;
       }

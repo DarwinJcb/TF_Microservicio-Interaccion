@@ -269,7 +269,7 @@ export class MensajesService {
 
   private formatearMensaje(
     mensaje: MensajeConChatYMatch,
-    usuarioEmisor: unknown | null,
+    usuarioEmisor: unknown,
   ) {
     const { Chat, ...datosMensaje } = mensaje;
     const { Match, ...datosChat } = Chat;

@@ -1,43 +1,63 @@
 /* tf_microservicio-interacciones/src/reportes/reportes.controller.ts */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { ReportesService } from './reportes.service';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateReporteDto } from './dto/create-reporte.dto';
-import { UpdateReporteDto } from './dto/update-reporte.dto';
+import {
+  ActualizarReportePayloadDto,
+  IdReportePayloadDto,
+  IdUsuarioReportesPayloadDto,
+} from './dto/reportes-payload.dto';
+import { REPORTES_PATTERNS } from './reportes.patterns';
+import { ReportesService } from './reportes.service';
 
-@Controller('reportes')
+@Controller()
 export class ReportesController {
   constructor(private readonly reportesService: ReportesService) {}
 
-  @Post()
-  create(@Body() createReporteDto: CreateReporteDto) {
+  @MessagePattern(REPORTES_PATTERNS.CREAR)
+  create(@Payload() createReporteDto: CreateReporteDto) {
     return this.reportesService.create(createReporteDto);
   }
 
-  @Get()
+  @MessagePattern(REPORTES_PATTERNS.LISTAR)
   findAll() {
     return this.reportesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reportesService.findOne(+id);
+  @MessagePattern(REPORTES_PATTERNS.LISTAR_POR_REPORTANTE)
+  findByReportante(
+    @Payload()
+    idUsuarioPayloadDto: IdUsuarioReportesPayloadDto,
+  ) {
+    return this.reportesService.findByReportante(idUsuarioPayloadDto.IdUsuario);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReporteDto: UpdateReporteDto) {
-    return this.reportesService.update(+id, updateReporteDto);
+  @MessagePattern(REPORTES_PATTERNS.LISTAR_POR_REPORTADO)
+  findByReportado(
+    @Payload()
+    idUsuarioPayloadDto: IdUsuarioReportesPayloadDto,
+  ) {
+    return this.reportesService.findByReportado(idUsuarioPayloadDto.IdUsuario);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reportesService.remove(+id);
+  @MessagePattern(REPORTES_PATTERNS.BUSCAR_POR_ID)
+  findOne(@Payload() idReportePayloadDto: IdReportePayloadDto) {
+    return this.reportesService.findOne(idReportePayloadDto.IdReporte);
+  }
+
+  @MessagePattern(REPORTES_PATTERNS.ACTUALIZAR)
+  update(
+    @Payload()
+    actualizarReportePayloadDto: ActualizarReportePayloadDto,
+  ) {
+    return this.reportesService.update(
+      actualizarReportePayloadDto.IdReporte,
+      actualizarReportePayloadDto.datosReporte,
+    );
+  }
+
+  @MessagePattern(REPORTES_PATTERNS.ELIMINAR)
+  remove(@Payload() idReportePayloadDto: IdReportePayloadDto) {
+    return this.reportesService.remove(idReportePayloadDto.IdReporte);
   }
 }
