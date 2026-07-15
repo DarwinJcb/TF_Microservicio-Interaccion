@@ -6,13 +6,17 @@ import { CondicionesComunicacionModule } from './condiciones-comunicacion/condic
 import { InteraccionesModule } from './interacciones/interacciones.module';
 import { MatchesModule } from './matches/matches.module';
 import { MensajesModule } from './mensajes/mensajes.module';
+import { MicroserviciosModule } from './microservicios/microservicios.module';
 import { ReportesModule } from './reportes/reportes.module';
+import { UsuariosRemotosModule } from './usuarios-remotos/usuarios-remotos.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    MicroserviciosModule,
+    UsuariosRemotosModule,
     CondicionesComunicacionModule,
     InteraccionesModule,
     ReportesModule,
@@ -21,4 +25,4 @@ import { ReportesModule } from './reportes/reportes.module';
     MensajesModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
