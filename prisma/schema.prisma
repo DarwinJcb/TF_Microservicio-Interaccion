@@ -1,3 +1,6 @@
+/**
+ * tf_microservicio-interacciones/prisma/schema.prisma
+ */
 generator client {
   provider     = "prisma-client"
   output       = "../src/generated/prisma"
