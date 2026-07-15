@@ -1,43 +1,55 @@
 /* tf_microservicio-interacciones/src/chats/chats.controller.ts */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { CHATS_PATTERNS } from './chats.patterns';
 import { ChatsService } from './chats.service';
+import {
+  ActualizarChatPayloadDto,
+  IdChatPayloadDto,
+  IdMatchChatsPayloadDto,
+} from './dto/chats-payload.dto';
 import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
 
-@Controller('chats')
+@Controller()
 export class ChatsController {
-  constructor(private readonly chatsService: ChatsService) {}
+  constructor(private readonly chatsService: ChatsService) { }
 
-  @Post()
-  create(@Body() createChatDto: CreateChatDto) {
+  @MessagePattern(CHATS_PATTERNS.CREAR)
+  create(@Payload() createChatDto: CreateChatDto) {
     return this.chatsService.create(createChatDto);
   }
 
-  @Get()
+  @MessagePattern(CHATS_PATTERNS.LISTAR)
   findAll() {
     return this.chatsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.chatsService.findOne(+id);
+  @MessagePattern(CHATS_PATTERNS.LISTAR_POR_MATCH)
+  findByMatch(
+    @Payload()
+    idMatchPayloadDto: IdMatchChatsPayloadDto,
+  ) {
+    return this.chatsService.findByMatch(idMatchPayloadDto.IdMatch);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChatDto: UpdateChatDto) {
-    return this.chatsService.update(+id, updateChatDto);
+  @MessagePattern(CHATS_PATTERNS.BUSCAR_POR_ID)
+  findOne(@Payload() idChatPayloadDto: IdChatPayloadDto) {
+    return this.chatsService.findOne(idChatPayloadDto.IdChat);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.chatsService.remove(+id);
+  @MessagePattern(CHATS_PATTERNS.ACTUALIZAR)
+  update(
+    @Payload()
+    actualizarChatPayloadDto: ActualizarChatPayloadDto,
+  ) {
+    return this.chatsService.update(
+      actualizarChatPayloadDto.IdChat,
+      actualizarChatPayloadDto.datosChat,
+    );
+  }
+
+  @MessagePattern(CHATS_PATTERNS.ELIMINAR)
+  remove(@Payload() idChatPayloadDto: IdChatPayloadDto) {
+    return this.chatsService.remove(idChatPayloadDto.IdChat);
   }
 }
