@@ -2,7 +2,7 @@
 import { IsInt, Min } from 'class-validator';
 
 export class CreateChatDto {
-    @IsInt()
-    @Min(1)
-    MatchFK: number;
+  @IsInt()
+  @Min(1)
+  MatchFK: number;
 }

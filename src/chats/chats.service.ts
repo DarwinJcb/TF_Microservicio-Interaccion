@@ -7,7 +7,7 @@ import { UpdateChatDto } from './dto/update-chat.dto';
 
 @Injectable()
 export class ChatsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createChatDto: CreateChatDto) {
     await this.verificarMatch(createChatDto.MatchFK);

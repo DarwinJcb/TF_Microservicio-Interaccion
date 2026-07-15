@@ -12,7 +12,7 @@ import { CreateChatDto } from './dto/create-chat.dto';
 
 @Controller()
 export class ChatsController {
-  constructor(private readonly chatsService: ChatsService) { }
+  constructor(private readonly chatsService: ChatsService) {}
 
   @MessagePattern(CHATS_PATTERNS.CREAR)
   create(@Payload() createChatDto: CreateChatDto) {

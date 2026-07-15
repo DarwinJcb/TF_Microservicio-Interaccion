@@ -4,22 +4,22 @@ import { IsDefined, IsInt, Min, ValidateNested } from 'class-validator';
 import { UpdateChatDto } from './update-chat.dto';
 
 export class IdChatPayloadDto {
-    @Type(() => Number)
-    @IsInt()
-    @Min(1)
-    IdChat: number;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  IdChat: number;
 }
 
 export class IdMatchChatsPayloadDto {
-    @Type(() => Number)
-    @IsInt()
-    @Min(1)
-    IdMatch: number;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  IdMatch: number;
 }
 
 export class ActualizarChatPayloadDto extends IdChatPayloadDto {
-    @IsDefined()
-    @ValidateNested()
-    @Type(() => UpdateChatDto)
-    datosChat: UpdateChatDto;
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => UpdateChatDto)
+  datosChat: UpdateChatDto;
 }

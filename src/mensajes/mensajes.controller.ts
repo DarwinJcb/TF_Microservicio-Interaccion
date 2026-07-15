@@ -1,43 +1,70 @@
 /* tf_microservicio-interacciones/src/mensajes/mensajes.controller.ts */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { MensajesService } from './mensajes.service';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateMensajeDto } from './dto/create-mensaje.dto';
-import { UpdateMensajeDto } from './dto/update-mensaje.dto';
+import {
+  ActualizarMensajePayloadDto,
+  IdChatMensajesPayloadDto,
+  IdMensajePayloadDto,
+  IdUsuarioMensajesPayloadDto,
+} from './dto/mensajes-payload.dto';
+import { MENSAJES_PATTERNS } from './mensajes.patterns';
+import { MensajesService } from './mensajes.service';
 
-@Controller('mensajes')
+@Controller()
 export class MensajesController {
   constructor(private readonly mensajesService: MensajesService) {}
 
-  @Post()
-  create(@Body() createMensajeDto: CreateMensajeDto) {
+  @MessagePattern(MENSAJES_PATTERNS.CREAR)
+  create(@Payload() createMensajeDto: CreateMensajeDto) {
     return this.mensajesService.create(createMensajeDto);
   }
 
-  @Get()
+  @MessagePattern(MENSAJES_PATTERNS.LISTAR)
   findAll() {
     return this.mensajesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mensajesService.findOne(+id);
+  @MessagePattern(MENSAJES_PATTERNS.LISTAR_POR_CHAT)
+  findByChat(
+    @Payload()
+    idChatPayloadDto: IdChatMensajesPayloadDto,
+  ) {
+    return this.mensajesService.findByChat(idChatPayloadDto.IdChat);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMensajeDto: UpdateMensajeDto) {
-    return this.mensajesService.update(+id, updateMensajeDto);
+  @MessagePattern(MENSAJES_PATTERNS.LISTAR_POR_USUARIO)
+  findByUsuario(
+    @Payload()
+    idUsuarioPayloadDto: IdUsuarioMensajesPayloadDto,
+  ) {
+    return this.mensajesService.findByUsuario(idUsuarioPayloadDto.IdUsuario);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mensajesService.remove(+id);
+  @MessagePattern(MENSAJES_PATTERNS.BUSCAR_POR_ID)
+  findOne(
+    @Payload()
+    idMensajePayloadDto: IdMensajePayloadDto,
+  ) {
+    return this.mensajesService.findOne(idMensajePayloadDto.IdMensaje);
+  }
+
+  @MessagePattern(MENSAJES_PATTERNS.ACTUALIZAR)
+  update(
+    @Payload()
+    actualizarMensajePayloadDto: ActualizarMensajePayloadDto,
+  ) {
+    return this.mensajesService.update(
+      actualizarMensajePayloadDto.IdMensaje,
+      actualizarMensajePayloadDto.datosMensaje,
+    );
+  }
+
+  @MessagePattern(MENSAJES_PATTERNS.ELIMINAR)
+  remove(
+    @Payload()
+    idMensajePayloadDto: IdMensajePayloadDto,
+  ) {
+    return this.mensajesService.remove(idMensajePayloadDto.IdMensaje);
   }
 }

@@ -9,4 +9,4 @@ import { ChatsService } from './chats.service';
   controllers: [ChatsController],
   providers: [ChatsService],
 })
-export class ChatsModule { }
+export class ChatsModule {}
