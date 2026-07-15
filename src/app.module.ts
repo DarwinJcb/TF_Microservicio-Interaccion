@@ -7,9 +7,10 @@ import { CondicionesComunicacionModule } from './condiciones-comunicacion/condic
 import { InteraccionesModule } from './interacciones/interacciones.module';
 import { ReportesModule } from './reportes/reportes.module';
 import { MatchesModule } from './matches/matches.module';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
-  imports: [PrismaModule, CondicionesComunicacionModule, InteraccionesModule, ReportesModule, MatchesModule],
+  imports: [PrismaModule, CondicionesComunicacionModule, InteraccionesModule, ReportesModule, MatchesModule, ChatsModule],
   controllers: [AppController],
   providers: [AppService],
 })
