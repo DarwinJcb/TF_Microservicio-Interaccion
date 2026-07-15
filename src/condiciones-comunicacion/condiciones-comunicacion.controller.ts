@@ -1,55 +1,63 @@
 /* tf_microservicio-interacciones/src/condiciones-comunicacion/condiciones-comunicacion.controller.ts */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { CONDICIONES_COMUNICACION_PATTERNS } from './condiciones-comunicacion.patterns';
 import { CondicionesComunicacionService } from './condiciones-comunicacion.service';
 import { CreateCondicionComunicacionDto } from './dto/create-condicion-comunicacion.dto';
-import { UpdateCondicionComunicacionDto } from './dto/update-condicion-comunicacion.dto';
+import {
+  ActualizarCondicionComunicacionPayloadDto,
+  IdCondicionComunicacionPayloadDto,
+} from './dto/condiciones-comunicacion-payload.dto';
 
-@Controller('condiciones-comunicacion')
+@Controller()
 export class CondicionesComunicacionController {
   constructor(
     private readonly condicionesComunicacionService: CondicionesComunicacionService,
-  ) {}
+  ) { }
 
-  @Post()
+  @MessagePattern(CONDICIONES_COMUNICACION_PATTERNS.CREAR)
   create(
-    @Body() createCondicionesComunicacionDto: CreateCondicionComunicacionDto,
+    @Payload()
+    createCondicionComunicacionDto: CreateCondicionComunicacionDto,
   ) {
     return this.condicionesComunicacionService.create(
-      createCondicionesComunicacionDto,
+      createCondicionComunicacionDto,
     );
   }
 
-  @Get()
+  @MessagePattern(CONDICIONES_COMUNICACION_PATTERNS.LISTAR)
   findAll() {
     return this.condicionesComunicacionService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.condicionesComunicacionService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCondicionesComunicacionDto: UpdateCondicionComunicacionDto,
+  @MessagePattern(CONDICIONES_COMUNICACION_PATTERNS.BUSCAR_POR_ID)
+  findOne(
+    @Payload()
+    idCondicionComunicacionPayloadDto: IdCondicionComunicacionPayloadDto,
   ) {
-    return this.condicionesComunicacionService.update(
-      +id,
-      updateCondicionesComunicacionDto,
+    return this.condicionesComunicacionService.findOne(
+      idCondicionComunicacionPayloadDto.IdCondicionComunicacion,
     );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.condicionesComunicacionService.remove(+id);
+  @MessagePattern(CONDICIONES_COMUNICACION_PATTERNS.ACTUALIZAR)
+  update(
+    @Payload()
+    actualizarCondicionComunicacionPayloadDto: ActualizarCondicionComunicacionPayloadDto,
+  ) {
+    return this.condicionesComunicacionService.update(
+      actualizarCondicionComunicacionPayloadDto.IdCondicionComunicacion,
+      actualizarCondicionComunicacionPayloadDto.datosCondicionComunicacion,
+    );
+  }
+
+  @MessagePattern(CONDICIONES_COMUNICACION_PATTERNS.ELIMINAR)
+  remove(
+    @Payload()
+    idCondicionComunicacionPayloadDto: IdCondicionComunicacionPayloadDto,
+  ) {
+    return this.condicionesComunicacionService.remove(
+      idCondicionComunicacionPayloadDto.IdCondicionComunicacion,
+    );
   }
 }

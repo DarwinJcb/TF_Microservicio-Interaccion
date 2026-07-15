@@ -1,30 +1,80 @@
 /* tf_microservicio-interacciones/src/condiciones-comunicacion/condiciones-comunicacion.service.ts */
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateCondicionComunicacionDto } from './dto/create-condicion-comunicacion.dto';
 import { UpdateCondicionComunicacionDto } from './dto/update-condicion-comunicacion.dto';
 
 @Injectable()
 export class CondicionesComunicacionService {
-  create(createCondicionesComunicacionDto: CreateCondicionComunicacionDto) {
-    return 'This action adds a new condicionesComunicacion';
+  constructor(private readonly prisma: PrismaService) { }
+
+  create(
+    createCondicionComunicacionDto: CreateCondicionComunicacionDto,
+  ) {
+    return this.prisma.condicionComunicacion.create({
+      data: createCondicionComunicacionDto,
+    });
   }
 
   findAll() {
-    return `This action returns all condicionesComunicacion`;
+    return this.prisma.condicionComunicacion.findMany({
+      orderBy: {
+        IdCondicionComunicacion: 'asc',
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} condicionesComunicacion`;
+  async findOne(idCondicionComunicacion: number) {
+    const condicionComunicacion =
+      await this.prisma.condicionComunicacion.findUnique({
+        where: {
+          IdCondicionComunicacion: idCondicionComunicacion,
+        },
+      });
+
+    if (!condicionComunicacion) {
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message:
+          `No existe una condición de comunicación con el ID ` +
+          `${idCondicionComunicacion}.`,
+        error: 'Not Found',
+      });
+    }
+
+    return condicionComunicacion;
   }
 
-  update(
-    id: number,
-    updateCondicionesComunicacionDto: UpdateCondicionComunicacionDto,
+  async update(
+    idCondicionComunicacion: number,
+    updateCondicionComunicacionDto: UpdateCondicionComunicacionDto,
   ) {
-    return `This action updates a #${id} condicionesComunicacion`;
+    await this.findOne(idCondicionComunicacion);
+
+    if (Object.keys(updateCondicionComunicacionDto).length === 0) {
+      throw new RpcException({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Debe enviar al menos un campo para actualizar.',
+        error: 'Bad Request',
+      });
+    }
+
+    return this.prisma.condicionComunicacion.update({
+      where: {
+        IdCondicionComunicacion: idCondicionComunicacion,
+      },
+      data: updateCondicionComunicacionDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} condicionesComunicacion`;
+  async remove(idCondicionComunicacion: number) {
+    await this.findOne(idCondicionComunicacion);
+
+    return this.prisma.condicionComunicacion.delete({
+      where: {
+        IdCondicionComunicacion: idCondicionComunicacion,
+      },
+    });
   }
 }
