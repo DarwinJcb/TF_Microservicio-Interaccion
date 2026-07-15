@@ -7,4 +7,4 @@ import { ReportesController } from './reportes.controller';
   controllers: [ReportesController],
   providers: [ReportesService],
 })
-export class ReportesModule { }
+export class ReportesModule {}

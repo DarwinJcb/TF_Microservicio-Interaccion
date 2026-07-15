@@ -7,4 +7,4 @@ import { MensajesController } from './mensajes.controller';
   controllers: [MensajesController],
   providers: [MensajesService],
 })
-export class MensajesModule { }
+export class MensajesModule {}

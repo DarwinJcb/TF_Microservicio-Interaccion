@@ -18,9 +18,7 @@ import {
   obtenerVariableEntorno,
 } from './configuracion/entorno';
 
-function obtenerMensajesValidacion(
-  errores: ValidationError[],
-): string[] {
+function obtenerMensajesValidacion(errores: ValidationError[]): string[] {
   return errores.flatMap((error) => {
     const mensajesPropios = error.constraints
       ? Object.values(error.constraints)

@@ -7,4 +7,4 @@ import { MatchesController } from './matches.controller';
   controllers: [MatchesController],
   providers: [MatchesService],
 })
-export class MatchesModule { }
+export class MatchesModule {}

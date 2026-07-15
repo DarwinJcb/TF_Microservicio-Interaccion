@@ -7,4 +7,4 @@ import { InteraccionesController } from './interacciones.controller';
   controllers: [InteraccionesController],
   providers: [InteraccionesService],
 })
-export class InteraccionesModule { }
+export class InteraccionesModule {}

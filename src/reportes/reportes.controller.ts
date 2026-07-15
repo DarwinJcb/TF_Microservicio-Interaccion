@@ -1,12 +1,20 @@
 /* tf_microservicio-interacciones/src/reportes/reportes.controller.ts */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ReportesService } from './reportes.service';
 import { CreateReporteDto } from './dto/create-reporte.dto';
 import { UpdateReporteDto } from './dto/update-reporte.dto';
 
 @Controller('reportes')
 export class ReportesController {
-  constructor(private readonly reportesService: ReportesService) { }
+  constructor(private readonly reportesService: ReportesService) {}
 
   @Post()
   create(@Body() createReporteDto: CreateReporteDto) {

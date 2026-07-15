@@ -7,4 +7,4 @@ import { CondicionesComunicacionController } from './condiciones-comunicacion.co
   controllers: [CondicionesComunicacionController],
   providers: [CondicionesComunicacionService],
 })
-export class CondicionesComunicacionModule { }
+export class CondicionesComunicacionModule {}

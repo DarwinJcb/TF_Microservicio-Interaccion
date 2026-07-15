@@ -17,7 +17,10 @@ export class CondicionesComunicacionService {
     return `This action returns a #${id} condicionesComunicacion`;
   }
 
-  update(id: number, updateCondicionesComunicacionDto: UpdateCondicionComunicacionDto) {
+  update(
+    id: number,
+    updateCondicionesComunicacionDto: UpdateCondicionComunicacionDto,
+  ) {
     return `This action updates a #${id} condicionesComunicacion`;
   }
 

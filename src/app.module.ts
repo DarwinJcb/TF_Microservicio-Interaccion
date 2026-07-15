@@ -21,4 +21,4 @@ import { ReportesModule } from './reportes/reportes.module';
     MensajesModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

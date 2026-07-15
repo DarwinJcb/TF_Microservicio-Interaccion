@@ -1,5 +1,13 @@
 /* tf_microservicio-interacciones/src/mensajes/mensajes.controller.ts */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MensajesService } from './mensajes.service';
 import { CreateMensajeDto } from './dto/create-mensaje.dto';
 import { UpdateMensajeDto } from './dto/update-mensaje.dto';
