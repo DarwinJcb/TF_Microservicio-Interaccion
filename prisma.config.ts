@@ -1,4 +1,4 @@
-/* tf_microservicio-interacciones/prisma/prisma.config.ts */
+/* tf_microservicio-interacciones/prisma.config.ts */
 // npm install --save-dev prisma dotenv
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
