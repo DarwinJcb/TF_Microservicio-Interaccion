@@ -2,7 +2,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCondicionComunicacionDto {
-    @IsString()
-    @IsNotEmpty()
-    descripcion: string;
+  @IsString()
+  @IsNotEmpty()
+  descripcion: string;
 }

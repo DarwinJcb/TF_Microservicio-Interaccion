@@ -18,7 +18,9 @@ import {
   obtenerVariableEntorno,
 } from './configuracion/entorno';
 
-function obtenerMensajesValidacion(errores: ValidationError[]): string[] {
+function obtenerMensajesValidacion(
+  errores: ValidationError[],
+): string[] {
   return errores.flatMap((error) => {
     const mensajesPropios = error.constraints
       ? Object.values(error.constraints)
@@ -33,8 +35,8 @@ function obtenerMensajesValidacion(errores: ValidationError[]): string[] {
 }
 
 async function bootstrap(): Promise<void> {
-  const host = obtenerVariableEntorno('MICROSERVICIO_HOST');
-  const puerto = obtenerPuertoEntorno('MICROSERVICIO_PUERTO');
+  const host = obtenerVariableEntorno('HOST_MICROSERVICIO');
+  const puerto = obtenerPuertoEntorno('PUERTO_MICROSERVICIO');
 
   const microservicio =
     await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
