@@ -25,4 +25,4 @@ import { UsuariosRemotosModule } from './usuarios-remotos/usuarios-remotos.modul
     MensajesModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

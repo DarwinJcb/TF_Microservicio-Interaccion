@@ -13,7 +13,7 @@ import {
 export class CondicionesComunicacionController {
   constructor(
     private readonly condicionesComunicacionService: CondicionesComunicacionService,
-  ) { }
+  ) {}
 
   @MessagePattern(CONDICIONES_COMUNICACION_PATTERNS.CREAR)
   create(
